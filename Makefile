@@ -10,32 +10,37 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minitalk
-CC = clang
-CFLAG = -Wall -Werror -Wextra -v
 
+CLIENT = client
+SERVER = server
+SRC_CLIENT = client.c
+SRC_SERVER = server.c
+
+OBJS_CLIENT = ${SRC_CLIENT:.c=.o}
+OBJS_SERVER = ${SRC_SERVER:.c=.o}
+CC = clang
+CFLAG = -Wall -Wextra -Werror -g
 LIBFT = libft/libft.a
 
+all: $(SERVER) $(CLIENT)
 
-
-
-$(NAME): all
-
-all:
+$(SERVER): $(OBJS_SERVER)
 	make -C libft
-	$(CC) $(CFLAG) -o server server.c  $(LIBFT) 
-	$(CC) $(CFLAG) -o client client.c  $(LIBFT) 
+	$(CC) $(CFLAG) $(SRC_SERVER) $(LIBFT) -o $(SERVER)
+
+
+$(CLIENT): $(OBJS_CLIENT)
+	make -C libft
+	$(CC) $(CFLAG) $(SRC_CLIENT) $(LIBFT) -o $(CLIENT)
 
 clean:
-	make clean -C libft
-	rm -rf server.o client.o 
+	make -C libft clean 
+	rm -rf $(OBJS_CLIENT) $(OBJS_SERVER)
 
-fclean:
-	make fclean -C libft 
-	rm -rf server client 
-
+fclean: clean
+	make -C ./libft fclean
+	rm -rf $(CLIENT) $(SERVER)
 
 re: fclean all
 
-.PHONY: all re flean clean  
-
+.PYTHON: all clean fclean re 
