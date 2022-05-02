@@ -12,44 +12,41 @@
 
 #include "minitalk.h"
 
+static void	bit_to_char(int signal, siginfo_t *info, void *context);
 
-
-void bit_to_char(int signal,  siginfo_t *info, void *context)
+int	main(void)
 {
-	static int base = 1;
-	static char c = 0;
-	pid_t pid;
+	struct sigaction	sa;
 
-	context =(void *)context;
-	pid = info->si_pid;
-	if(signal == SIGUSR1)
-		c += base;
-	base *= 2;
-	if(base == 256)
-	{
-		ft_putchar_fd(c, 1);
-		base = 1;
-		c = 0;	
-	}	
-	kill(pid, SIGUSR2);
-}
-
-
-int main (void)
-{
-	struct	sigaction	sa;
-	
 	ft_putstr_fd("The Serve PID:", 1);
 	ft_putnbr_fd(getpid(), 1);
 	ft_putstr_fd("\n", 1);
-
 	sa.sa_sigaction = bit_to_char;
 	sa.sa_flags = SA_SIGINFO;
-	if(sigaction(SIGUSR1, &sa, 0) < 0 || sigaction(SIGUSR2, &sa, 0) < 0)
-			return (1);
-	
-	while(1)
+	if (sigaction(SIGUSR1, &sa, 0) < 0 || sigaction(SIGUSR2, &sa, 0) < 0)
+		return (1);
+	while (1)
 		pause();
-
 	return (0);
+}
+
+static void	bit_to_char(int signal, siginfo_t *info, void *context)
+{
+	static int	base = 1;
+	static char	c = 0;
+	int			pid;
+
+	context = (void *)context;
+	pid = info->si_pid;
+	if (signal == SIGUSR1)
+		c += base;
+	base *= 2;
+	if (base == 256)
+	{
+		ft_putchar_fd(c, 1);
+		base = 1;
+		c = 0;
+	}	
+	usleep(1100);
+	kill(pid, SIGUSR2);
 }
