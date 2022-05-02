@@ -6,10 +6,9 @@
 #    By: ryoshio- <ryoshio-@student.42sp.org.br     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/14 00:58:22 by ryoshio-          #+#    #+#              #
-#    Updated: 2022/04/30 10:10:53 by ryoshio-         ###   ########.fr        #
+#    Updated: 2022/05/01 07:10:14 by ryoshio-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 CLIENT = client
 SERVER = server
